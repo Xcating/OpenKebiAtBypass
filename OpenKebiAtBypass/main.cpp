@@ -177,7 +177,7 @@ int BypassStart()
     else {
         cout << "mhyprot3文件不存在，请检查你的游戏" << endl;
     }
-
+    LOG_INFO("正在启动Korepi...");
     return 0;
 }
 int main()
