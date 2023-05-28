@@ -12,6 +12,7 @@
 using namespace std;
 int s, language;
 string zeros;
+string Paths;
 int _lock = 1;
 string giPath;
 void LOG_INFO(string x) {
@@ -81,7 +82,7 @@ int _configL()
         ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
         if (GetOpenFileName(&ofn) == TRUE)
         {
-            // 将ofn.lpstrFile转换为std::string类型
+            // 将ofn.lpstrFile转换为string类型
             string selectedFile(ofn.lpstrFile);
             zeros = selectedFile;
         }
@@ -102,23 +103,82 @@ string GetPath()
 {
     giPath = GetGIPath();
     size_t pos = 0;
-    while ((pos = giPath.find('{', pos)) != std::string::npos) {  // 查找左花括号
+    while ((pos = giPath.find('{', pos)) != string::npos) {  // 查找左花括号
         giPath.erase(pos, 1);  // 删除左花括号
     }
     pos = 0;
-    while ((pos = giPath.find('}', pos)) != std::string::npos) {  // 查找右花括号
+    while ((pos = giPath.find('}', pos)) != string::npos) {  // 查找右花括号
         giPath.erase(pos, 1);  // 删除右花括号
     }
     // 获取程序路径
-    std::filesystem::path programPath = filesystem::path(giPath);
+    filesystem::path programPath = filesystem::path(giPath);
 
     // 获取程序所在目录
-    std::filesystem::path programDirectory = programPath.parent_path();
+    filesystem::path programDirectory = programPath.parent_path();
 
     // 将目录路径转换为字符串
-    std::string programDirectoryString = programDirectory.string();
+    string programDirectoryString = programDirectory.string();
 
     return programDirectoryString;
+}
+int BypassStart()
+{
+    LOG_INFO("开始启动游戏并bypass");
+    filesystem::path path(Paths);
+    string filename = "HoYoKProtect.sys";
+    filesystem::path file_path = path / filename;
+    if (filesystem::exists(file_path)) {
+        cout << "HoYoKProtect存在，正在使用方法A绕过" << endl;
+        filesystem::path old_name = path / "HoYoKProtect.sys";
+        filesystem::path new_name = path / "HoYoBypass.sys";
+        try {
+            filesystem::rename(old_name, new_name);
+            LOG_INFO("绕过方法A成功");
+        }
+        catch (filesystem::filesystem_error& e) {
+            cout << "绕过方法A失败: " << e.what() << endl;
+        }
+    }
+    else {
+        cout << "HoYoKProtect不存在，请检查你的游戏" << endl;
+    }
+
+    filename = "mhypbase.dll";
+    file_path = path / filename;
+    if (filesystem::exists(file_path)) {
+        cout << "MHYPbase存在，正在使用方法A绕过" << endl;
+        filesystem::path old_name = path / "mhypbase.dll";
+        filesystem::path new_name = path / "mhyPBypass.dll";
+        try {
+            filesystem::rename(old_name, new_name);
+            LOG_INFO("绕过方法A成功");
+        }
+        catch (filesystem::filesystem_error& e) {
+            cout << "绕过方法A失败: " << e.what() << endl;
+        }
+    }
+    else {
+        cout << "MHYPbase不存在，请检查你的游戏" << endl;
+    }
+    filename = "mhyprot3.Sys";
+    file_path = path / filename;
+    if (filesystem::exists(file_path)) {
+        cout << "mhyprot3文件存在，正在使用方法A绕过" << endl;
+        filesystem::path old_name = path / "mhyprot3.Sys";
+        filesystem::path new_name = path / "mhyP3Bypass.Sys";
+        try {
+            filesystem::rename(old_name, new_name);
+            LOG_INFO("绕过方法A成功");
+        }
+        catch (filesystem::filesystem_error& e) {
+            cout << "绕过方法A失败: " << e.what() << endl;
+        }
+    }
+    else {
+        cout << "mhyprot3文件不存在，请检查你的游戏" << endl;
+    }
+
+    return 0;
 }
 int main()
 {
@@ -142,9 +202,11 @@ int main()
         int love = 1;
     else
         giPath = zeros;
-    string Paths = GetPath();
-    std::cout << "程序所在目录：" << Paths << std::endl;
+    Paths = GetPath();
+    cout << "程序所在目录：" << Paths << endl;
+    LOG_INFO("回车启动游戏并绕过尝试本地反作弊");
     system("pause");
+    BypassStart();
     return 0;
     
     
