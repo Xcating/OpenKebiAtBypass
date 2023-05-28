@@ -47,23 +47,8 @@ string GetGIPath() {
 
     return w;
 }
-int main()
+int _configL()
 {
-    system("title OpenKebiAtBypass");
-    LOG_INFO("[OpenKebiAtBypass]");
-    LOG_INFO("[原神！启动！]");
-    LOG_INFO("--------");
-    LOG_INFO("请选择语言 | plz select language");
-    LOG_INFO("1. 中文(zh-cn)");
-    LOG_INFO("2. 英文(en)");
-    while (!(s == 1 || s == 2))
-    {
-        if (!(language == 1 || language == 2) && !(language == 0))
-            LOG_INFO("语言输入错误 | Language ERROR??? WT LOSER IQ USRE???");
-        cin >> s;
-        language = s;
-    }
-    LOG_INFO("-------");
     if (language == 1)
         LOG_INFO("正在加载配置文件...");
     else
@@ -77,7 +62,7 @@ int main()
             LOG_INFO("config.ini load success");
     }
     else {
-        if(language==1)
+        if (language == 1)
             cout << "config.ini文件不存在于当前目录" << endl;
         else
             cout << "config.ini does not exist" << endl;
@@ -111,6 +96,10 @@ int main()
         config.close();
         _lock = 0;
     }
+    return 0;
+}
+string GetPath()
+{
     giPath = GetGIPath();
     size_t pos = 0;
     while ((pos = giPath.find('{', pos)) != std::string::npos) {  // 查找左花括号
@@ -129,11 +118,32 @@ int main()
     // 将目录路径转换为字符串
     std::string programDirectoryString = programDirectory.string();
 
+    return programDirectoryString;
+}
+int main()
+{
+    system("title OpenKebiAtBypass");
+    LOG_INFO("[OpenKebiAtBypass]");
+    LOG_INFO("[原神！启动！]");
+    LOG_INFO("--------");
+    LOG_INFO("请选择语言 | plz select language");
+    LOG_INFO("1. 中文(zh-cn)");
+    LOG_INFO("2. 英文(en)");
+    while (!(s == 1 || s == 2))
+    {
+        if (!(language == 1 || language == 2) && !(language == 0))
+            LOG_INFO("语言输入错误 | Language ERROR??? WT LOSER IQ USRE???");
+        cin >> s;
+        language = s;
+    }
+    LOG_INFO("-------");
+    _configL();
     if (_lock == 1)
         int love = 1;
     else
         giPath = zeros;
-    std::cout << "程序所在目录：" << programDirectoryString << std::endl;
+    string Paths = GetPath();
+    std::cout << "程序所在目录：" << Paths << std::endl;
     system("pause");
     return 0;
     
